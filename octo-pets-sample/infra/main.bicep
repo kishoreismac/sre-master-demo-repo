@@ -17,6 +17,20 @@ var tags = {
   'azd-env-name': environmentName
 }
 
+// ⚠️ INTENTIONALLY MISSING TAGS on some resources
+var tagsComplete = {
+  'azd-env-name': environmentName
+  purpose: 'sre-agent-cost-demo'
+  'cost-center': 'engineering'
+  owner: 'platform-team'
+}
+
+// ⚠️ Tags missing cost-center and owner
+var tagsIncomplete = {
+  'azd-env-name': environmentName
+  purpose: 'sre-agent-cost-demo'
+}
+
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${environmentName}'
   location: location
@@ -29,6 +43,8 @@ module resources 'resources.bicep' = {
     location: location
     tags: tags
     principalId: principalId
+    tagsComplete: tagsComplete
+    tagsIncomplete: tagsIncomplete
   }
 }
 
@@ -51,3 +67,11 @@ output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CO
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
 output OCTOPETS_APPINSIGHTS_APPINSIGHTSCONNECTIONSTRING string = octopets_appinsights.outputs.appInsightsConnectionString
+output VM1_NAME string = resources.outputs.vm1Name
+output VM2_NAME string = resources.outputs.vm2Name
+output ORPHANED_DISK_NAME string = resources.outputs.orphanedDiskName
+output UNTAGGED_STORAGE_NAME string = resources.outputs.untaggedStorageName
+output WEB_APP_URL string = resources.outputs.webAppUrl
+output AZURE_LOCATION string = location
+output SERVICE_API_NAME string = resources.outputs.webAppName
+output SERVICE_API_RESOURCE_GROUP string = rg.name
