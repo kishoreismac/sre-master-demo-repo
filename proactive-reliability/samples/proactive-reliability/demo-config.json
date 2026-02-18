@@ -1,0 +1,10 @@
+{
+  "SubscriptionId": "7b53f31b-558b-4108-b0c2-8fc0c7ea7435",
+  "ProductionUrl": "https://k-sre-demo-app-service.azurewebsites.net",
+  "AppInsightsName": "k-sre-demo-app-service-ai",
+  "Location": "westus2",
+  "SetupTime": "2026-02-12 11:49:31",
+  "ResourceGroupName": "k-sre-demo-rg",
+  "StagingUrl": "https://k-sre-demo-app-service-staging.azurewebsites.net",
+  "AppServiceName": "k-sre-demo-app-service"
+}

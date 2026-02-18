@@ -1,0 +1,17 @@
+name: security-posture-demo
+metadata:
+  description: Demo environment with intentional security misconfigurations for SRE Agent to detect
+
+services:
+  api:
+    project: ./src/api
+    host: appservice
+    language: js
+
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+pipeline:
+  provider: github
