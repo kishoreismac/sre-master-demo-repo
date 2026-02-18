@@ -1,8 +1,0 @@
-{
-  "resourceGroup": "rg-",
-  "virtualNetwork": "vnet-",
-  "networkSecurityGroup": "nsg-",
-  "storageAccount": "st",
-  "keyVault": "kv-",
-  "privateDnsZone": "pdns-"
-}
