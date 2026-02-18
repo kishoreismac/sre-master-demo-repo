@@ -17,6 +17,17 @@ var tags = {
   'azd-env-name': environmentName
 }
 
+var securedemoinfratags = {
+  'azd-env-name': environmentName
+  purpose: 'sre-agent-security-demo'
+}
+
+@description('Secret expiration in days from now (set low to trigger SRE Agent detection)')
+param secretExpirationDays int = 14
+
+@description('Current time for secret expiration calculation')
+param currentTime string = utcNow()
+
 // ⚠️ INTENTIONALLY MISSING TAGS on some resources
 var tagsComplete = {
   'azd-env-name': environmentName
@@ -42,9 +53,12 @@ module resources 'resources.bicep' = {
   params: {
     location: location
     tags: tags
+    securedemoinfratags: securedemoinfratags
     principalId: principalId
     tagsComplete: tagsComplete
     tagsIncomplete: tagsIncomplete
+    currentTime: currentTime
+    secretExpirationDays: secretExpirationDays
   }
 }
 
@@ -75,3 +89,15 @@ output WEB_APP_URL string = resources.outputs.webAppUrl
 output AZURE_LOCATION string = location
 output SERVICE_API_NAME string = resources.outputs.webAppName
 output SERVICE_API_RESOURCE_GROUP string = rg.name
+
+output RESOURCE_GROUP_NAME string = rg.name
+output VNET_NAME string = resources.outputs.vnetName
+output NSG_NAME string = resources.outputs.nsgName
+output STORAGE_ACCOUNT_NAME string = resources.outputs.storageAccountName
+output KEY_VAULT_NAME string = resources.outputs.keyVaultName
+output PRIVATE_DNS_ZONE_NAME string = resources.outputs.privateDnsZoneName
+output SECURE_WEB_APP_URL string = resources.outputs.secureWebAppUrl
+
+// Outputs for azd deployment
+output SECURE_SERVICE_API_NAME string = resources.outputs.secureWebAppName
+
