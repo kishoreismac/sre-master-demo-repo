@@ -17,20 +17,6 @@ var tags = {
   'azd-env-name': environmentName
 }
 
-// ⚠️ INTENTIONALLY MISSING TAGS on some resources
-var tagsComplete = {
-  'azd-env-name': environmentName
-  purpose: 'sre-agent-cost-demo'
-  'cost-center': 'engineering'
-  owner: 'platform-team'
-}
-
-// ⚠️ Tags missing cost-center and owner
-var tagsIncomplete = {
-  'azd-env-name': environmentName
-  purpose: 'sre-agent-cost-demo'
-}
-
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${environmentName}'
   location: location
@@ -43,8 +29,6 @@ module resources 'resources.bicep' = {
     location: location
     tags: tags
     principalId: principalId
-    tagsComplete: tagsComplete
-    tagsIncomplete: tagsIncomplete
   }
 }
 

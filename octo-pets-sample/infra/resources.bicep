@@ -3,13 +3,6 @@ param location string = resourceGroup().location
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
 
-@description('Complete tags with cost-center and owner')
-param tagsComplete object
-
-@description('Incomplete tags missing cost-center and owner')
-param tagsIncomplete object
-
-
 
 @description('Tags that will be applied to all resources')
 param tags object = {}
@@ -77,31 +70,6 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-02-02-p
     }
   }
 
-}
-
-
-// ============================================================================
-// VIRTUAL NETWORK (shared)
-// ============================================================================
-resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' = {
-  name: 'vnet-${resourceToken}'
-  location: location
-  tags: tagsComplete
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-    }
-    subnets: [
-      {
-        name: 'snet-vms'
-        properties: {
-          addressPrefix: '10.0.1.0/24'
-        }
-      }
-    ]
-  }
 }
 
 output MANAGED_IDENTITY_CLIENT_ID string = managedIdentity.properties.clientId
