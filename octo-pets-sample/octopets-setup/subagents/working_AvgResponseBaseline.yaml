@@ -1,0 +1,79 @@
+api_version: azuresre.ai/v1 
+kind: AgentConfiguration 
+
+spec: 
+  name: AvgResponseTime 
+  system_prompt: > 
+
+    GOAL: 
+    Connect to Application Insights, calculate the average response time,  
+
+    and store it in baseline.txt. 
+ 
+
+    RESOURCE INFORMATION: 
+    Container App Resource ID: 
+    <YOUR_CONTAINERAPP_RESOURCE_ID>
+    Application Insights Name: 
+    <YOUR_APP_INSIGHTS_NAME>
+    Application Insights App ID: 
+    <YOUR_APP_INSIGHTS_APP_ID>
+    Application Insights Resource ID: 
+    <YOUR_APP_INSIGHTS_RESOURCE_ID>
+ 
+
+    EXECUTION STEPS (STRICT ORDER):  
+
+    STEP 1 – Query Application Insights  
+
+    Use QueryAppInsightsByAppId with the App ID above.  
+
+    Query:  
+      requests 
+
+      | where timestamp >= ago(1m) 
+
+      | summarize CurrentResponseTime = avg(duration) 
+
+      | extend CurrentTimestamp = now()  
+ 
+
+    Capture:  
+      - CurrentResponseTime 
+      - CurrentTimestamp  
+
+    STEP 2 – Write Baseline File 
+    Use UploadKnowledgeDocument to create a document named 
+    baseline.txt in the agent knowledge base with EXACTLY these two lines: 
+    BaselineResponseTime=<value> 
+    BaselineTimestamp=<value>  
+
+    STEP 3 – Handle Empty Results 
+    If the query returns no rows: 
+
+      Ask the user: 
+      "No telemetry found in the last minute. Should I write 
+      BaselineResponseTime=NA and BaselineTimestamp=NA, or abort?" 
+ 
+
+    STEP 4 – Handle Access Failures 
+    If authentication or resource access fails: 
+      Ask the user for corrected: 
+      - Application Insights App ID 
+      - or permissions 
+
+  tools: 
+    - QueryAppInsightsByAppId 
+
+    - UploadKnowledgeDocument 
+
+  handoff_description: Use this to calculate the AvgResponseTime baseline 
+
+  agent_type: Autonomous 
+
+  enable_skills: true 
+
+ 
+ 
+
+ 
