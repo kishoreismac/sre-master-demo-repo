@@ -1,0 +1,18 @@
+Run OctoHealthMonitorAgent every 30 minutes to monitor the
+octopetsapi container app in resource group rg-octopets-demo.
+
+Scope:
+- Detect memory leak patterns using Azure Monitor metrics.
+- Detect abnormal HTTP 5xx spikes.
+- Detect latency degradation over last 30 minutes.
+
+If anomaly detected:
+- Mark status as "Anomaly Detected"
+- Include metric deltas and UTC timestamps.
+- Recommend escalation to OctoIncidentDiagnosticsAgent.
+
+If no anomaly:
+- Return concise healthy confirmation.
+
+This task is part of the autonomous monitoring workflow
+for the Octopets demo environment.
