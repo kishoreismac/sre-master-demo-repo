@@ -4,7 +4,8 @@ using Octopets.Backend.Repositories.Interfaces;
 namespace Octopets.Backend.Endpoints;
 
 public static class ListingEndpoints
-{    // Method to simulate memory exhaustion by allocating ~1GB of memory
+{    
+    // Method to simulate memory exhaustion by allocating ~1GB of memory
     private static void AReallyExpensiveOperation()
     {
         // Create lists to hold large amounts of data
@@ -44,13 +45,21 @@ public static class ListingEndpoints
         })
         .WithName("GetAllListings")
         .WithDescription("Gets all listings")
-        .WithOpenApi();        // GET listing by id
+        .WithOpenApi();
+
+        // GET listing by id
         group.MapGet("/{id:int}", async (int id, IListingRepository repository, IConfiguration config) =>
         {
+            // INTENTIONAL BUG: This will cause 500 errors when ERRORS flag is set to true
             // Only throw exception or simulate memory issues if ERRORS flag is set to true
             if (config.GetValue<bool>("ERRORS"))
             {
-                AReallyExpensiveOperation();
+                // Simulate null reference exception - causes immediate HTTP 500
+                string nullString = null;
+                var length = nullString.Length; // NullReferenceException for SRE Agent detection
+                
+                // Alternative: Memory exhaustion (commented out for now)
+                // AReallyExpensiveOperation();
             }
 
             var listing = await repository.GetByIdAsync(id);
@@ -62,7 +71,9 @@ public static class ListingEndpoints
         {
             operation.Parameters[0].Description = "The ID of the listing";
             return operation;
-        });        // POST new listing
+        });
+
+        // POST new listing
         group.MapPost("/", async (Listing listing, IListingRepository repository, IConfiguration config) =>
         {
             if (!config.GetValue<bool>("ENABLE_CRUD", true))
