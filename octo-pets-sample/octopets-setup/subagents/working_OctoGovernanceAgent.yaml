@@ -13,6 +13,21 @@ spec:
     sections. If no findings exist, explicitly write "None". This is a mandatory formatting
     contract.
 
+    ================================================== MANDATORY DELIVERY REQUIREMENT (ALL CHANNELS)
+    ==================================================
+
+    At the end of every successful run you MUST perform ALL actions:
+
+    1. Send full governance report via Email 2. Post full governance summary to Microsoft Teams 3.
+    Create GitHub issue when high or medium risk findings exist
+
+    These are REQUIRED actions.
+
+    If any delivery fails: - Report the failure in the output - Include the failure reason - Provide
+    retry recommendation - Do NOT silently skip - Continue remaining actions
+
+    The run is complete ONLY after all outbound actions succeed or fail with reason.
+
     Knowledge Source:
       - org-practices.md (organizational standards)
 
@@ -94,16 +109,35 @@ spec:
 
     === REGIONAL COMPLIANCE SUMMARY === Non-Compliant Regions Detected: Recommended Action:
 
-    === TEAMS NOTIFICATION SUMMARY === Channel: #octopets-platform-governance Severity Summary: Key
-    Risks:
-
-    === EMAIL NOTIFICATION === To: platform-leads@company.com Subject: Subscription Governance
-    Report – <Overall Compliance Posture> (UTC <timestamp>) Body:
+    === TEAMS NOTIFICATION SUMMARY === Channel: SRE_DEMO_K Severity Summary: Body:
       - Executive summary
       - High-risk violations
       - Drift findings
       - Tag gaps
       - Required actions
+    Key Risks:
+
+    === EMAIL NOTIFICATION === To: KIRAN@ECOGNITY.AI Subject: Subscription Governance Report –
+    <Overall Compliance Posture> (UTC <timestamp>) Body:
+      - Executive summary
+      - High-risk violations
+      - Drift findings
+      - Tag gaps
+      - Required actions
+
+    === GITHUB ISSUE SUMMARY === Repository: configured_repository ISSUE FORMAT:
+      - Executive summary
+      - High-risk violations
+      - Drift findings
+      - Tag gaps
+      - Required actions
+    Issue Created: <Yes | No> Reason: Issue URL:
+
+    -------------------------------------------------- DELIVERY STATUS (REQUIRED)
+    --------------------------------------------------
+
+    Email Status: Teams Status: GitHub Issue Status: Failure Reason (if any): Retry Recommendation
+    (if any):
 
     -------------------------------------------------- CONSTRAINTS
     --------------------------------------------------
@@ -119,8 +153,49 @@ spec:
     - RunAzCliReadCommands
     - QueryLogAnalyticsByResourceId
     - GetCurrentUtcTime
+  mcp_tools:
+    - sre-agent-github-connect_add_comment_to_pending_review
+    - sre-agent-github-connect_add_issue_comment
+    - sre-agent-github-connect_add_reply_to_pull_request_comment
+    - sre-agent-github-connect_assign_copilot_to_issue
+    - sre-agent-github-connect_create_branch
+    - sre-agent-github-connect_create_or_update_file
+    - sre-agent-github-connect_create_pull_request
+    - sre-agent-github-connect_create_repository
+    - sre-agent-github-connect_delete_file
+    - sre-agent-github-connect_fork_repository
+    - sre-agent-github-connect_get_commit
+    - sre-agent-github-connect_get_file_contents
+    - sre-agent-github-connect_get_label
+    - sre-agent-github-connect_get_latest_release
+    - sre-agent-github-connect_get_me
+    - sre-agent-github-connect_get_release_by_tag
+    - sre-agent-github-connect_get_tag
+    - sre-agent-github-connect_get_team_members
+    - sre-agent-github-connect_get_teams
+    - sre-agent-github-connect_issue_read
+    - sre-agent-github-connect_issue_write
+    - sre-agent-github-connect_list_branches
+    - sre-agent-github-connect_list_commits
+    - sre-agent-github-connect_list_issue_types
+    - sre-agent-github-connect_list_issues
+    - sre-agent-github-connect_list_pull_requests
+    - sre-agent-github-connect_list_releases
+    - sre-agent-github-connect_list_tags
+    - sre-agent-github-connect_merge_pull_request
+    - sre-agent-github-connect_pull_request_read
+    - sre-agent-github-connect_pull_request_review_write
+    - sre-agent-github-connect_push_files
+    - sre-agent-github-connect_request_copilot_review
+    - sre-agent-github-connect_search_code
+    - sre-agent-github-connect_search_issues
+    - sre-agent-github-connect_search_pull_requests
+    - sre-agent-github-connect_search_repositories
+    - sre-agent-github-connect_search_users
+    - sre-agent-github-connect_sub_issue_write
+    - sre-agent-github-connect_update_pull_request
+    - sre-agent-github-connect_update_pull_request_branch
   handoff_description: >
     Use this agent for subscription-wide governance validation and IaC drift detection based on
     organizational practices.
   agent_type: Autonomous
-  enable_skills: true
