@@ -19,20 +19,21 @@ var length = nullString.Length; // Caused NullReferenceException -> HTTP 500
 
 An `AReallyExpensiveOperation()` method (~1GB memory allocation simulation) was also present and has been removed.
 
-### Incident History (2026-04-22)
-This code caused **4 separate Sev3 alerts** in ~2 hours:
+### Incident History (2026-04-22 – 2026-04-23)
+This code caused **4 separate Sev3 alerts** in ~2 hours on 2026-04-22, and a further regression on 2026-04-23:
 
-| # | Time (UTC) | Alert | Impact |
-|---|------------|-------|--------|
-| 1 | 10:25 | avgresponse on octopetsapi | 73.7% request failure rate |
-| 2 | 11:38 | avgresponse on octopetsapi | Residual traffic to old revision |
-| 3 | 11:38 | avgresponse on octopetsapi | Same residual traffic pattern |
-| 4 | 11:50 | avgresponse on octopetsapi | ERRORS=true re-enabled; permanently fixed |
+| # | Date | Time (UTC) | Alert | Impact |
+|---|------|------------|-------|--------|
+| 1 | 2026-04-22 | 10:25 | avgresponse on octopetsapi | 73.7% request failure rate |
+| 2 | 2026-04-22 | 11:38 | avgresponse on octopetsapi | Residual traffic to old revision |
+| 3 | 2026-04-22 | 11:38 | avgresponse on octopetsapi | Same residual traffic pattern |
+| 4 | 2026-04-22 | 11:50 | avgresponse on octopetsapi | ERRORS=true re-enabled; permanently fixed |
+| 5 | 2026-04-23 | 05:38 | avgresponse on octopetsapi (Alert #11) | **IaC drift** — rev --0000010 deployed with `ERRORS=true` from stale IaC template; 50% 5xx rate |
 
 ### Resolution
 - **PR #7** merged (commit `c0c4909`) — permanently removed all error injection code
 - The `ERRORS` environment variable no longer has any effect on the application
-- The `ERRORS` env var can be safely removed from the container app configuration
+- The `ERRORS` env var has been **removed from all IaC templates** (`apphost/infra/octopetsapi.tmpl.yaml`, `apphost/Program.cs`) to prevent future deployment regressions
 
 ### Lessons Learned
 1. Never deploy intentional error injection code to production — use feature flags in a testing environment only

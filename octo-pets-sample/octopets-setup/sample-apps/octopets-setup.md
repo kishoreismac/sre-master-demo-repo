@@ -59,7 +59,7 @@ The deployment will create:
 4. Click on the Application URL to open Octopets in your browser
 5. Verify the application loads correctly
 
-## Step 2: Configure Application to Generate Errors
+## Step 2: Configure Application Settings
 
 ### 2.1 Configure Frontend Settings
 
@@ -70,16 +70,7 @@ The deployment will create:
    - **Value**: `false`
 4. Click **Save** and wait for the revision to deploy
 
-### 2.2 Enable Error Generation in Backend
-
-1. Navigate to your backend Container App (octopetsapi)
-2. Go to **Containers** → **Edit and deploy**
-3. Find or add the environment variable:
-   - **Name**: `Errors`
-   - **Value**: `true`
-4. Click **Save** and wait for the revision to deploy
-
-**What this does:** Setting `Errors` to `true` activates code that intentionally consumes excessive memory, simulating a memory leak scenario.
+> **Note:** The `ERRORS` environment variable has been permanently removed from the application. Error injection is no longer supported — see `backend/KNOWN_ISSUES.md` for details.
 
 ## Step 3: Upload Code to Your GitHub Repository
 
